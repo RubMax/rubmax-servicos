@@ -379,7 +379,7 @@ a\
       font-weight:;
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 6px;
+      font-size: 16px;
     }
 
     .size-item.selected {
