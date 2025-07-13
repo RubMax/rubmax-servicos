@@ -1,4 +1,4 @@
-
+a\
  /* Reset et styles de base */
     html, body {
       width: 100%;
@@ -381,7 +381,7 @@
       font-weight:;
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 14px;
+      font-size: 6px;
     }
 
     .size-item.selected {
