@@ -374,13 +374,14 @@
     }
 
     .size-item {
-      background:red;
+      background: black;
       color: white;
       padding: 1rem 1rem;
       border-radius: 0.2rem;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.2s;
+      font-size: 1em;
     }
 
     .size-item.selected {
