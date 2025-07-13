@@ -369,15 +369,15 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 0.1rem;
+      gap: 1rem;
       margin: 1rem 0;
     }
 
     .size-item {
-      background: #007bff;
+      background:red;
       color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 0.3rem;
+      padding: 1rem 1rem;
+      border-radius: 0.2rem;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.2s;
