@@ -210,11 +210,7 @@ a\
 }
 
 
-.popup-content {
-  /* ... autres styles ... */
-  overflow-y: auto; /* Défilement pour le contenu */
-  max-height: 50vh; /* Hauteur maximale pour le contenu */
-}
+
     
     .gallery-nav {
       position: absolute;
@@ -279,9 +275,11 @@ a\
       padding: 1rem;
       border-radius: 1rem;
       width: 95vw;
-      max-width: 600px;
+      max-height: 50vh;
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+     overflow-y: auto; /* Défilement pour le contenu */
       text-align: center;
+     font-size: 1em;
     }
 
     .popup-close {
