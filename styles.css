@@ -269,17 +269,23 @@ a\
       overflow-y: auto;
     }
 
+
     .popup-content {
+     max-width: 1000px;
+      max-height: 50vh;
+      margin: auto;
+      padding: 3px;
+      box-sizing: border-box;
+      overflow-y: auto;
       background: white;
       color: #333;
       padding: 1rem;
       border-radius: 1rem;
       width: 95vw;
-      max-height: 50vh;
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
      overflow-y: auto; /* Défilement pour le contenu */
       text-align: center;
-     font-size: 1em;
+     font-size: 16px;
     }
 
     .popup-close {
@@ -312,14 +318,7 @@ a\
 }
 
 /* Contenu duPOPUP en bas l images du popup */
-.popup-content {
-  width: 100%;
-  max-width: 1000px;
-  margin: auto;
-  padding: 3px;
-  box-sizing: border-box;
-  overflow-y: auto;
-}
+
 
     /* Popup plein écran avec fond blanc */
 .popup {
