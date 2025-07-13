@@ -435,7 +435,7 @@
     }
     
     .description-popup-content {
-      background: white;
+      background: red;
       padding: 1rem;
       border-radius: 0.5rem;
       max-width: 80%;
