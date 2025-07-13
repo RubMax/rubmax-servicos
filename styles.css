@@ -100,7 +100,7 @@
 }
     /* Contenu principal */
     .main-content {
-      margin-top: 120px;
+      margin-top: 90px;
       padding: 0 5px;
     }
 
@@ -118,7 +118,7 @@
       color: #fff;
       text-align: center;
       padding: .1rem;
-      margin-top: 2rem;
+      margin-top: 1rem;
       font-size: 1.2em;
       scroll-margin-top: 120px;
     }
@@ -127,8 +127,8 @@
       color: #004d7e;
       padding: .1rem;
       border-radius: .25rem;
-      margin-top: 2rem;
-      font-size: 1.6em;
+      margin-top: 1rem;
+      font-size: 1rem;
       scroll-margin-top: 120px;
     }
     
