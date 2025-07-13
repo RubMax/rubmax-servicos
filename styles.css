@@ -369,19 +369,19 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1rem;
+      gap: ;
       margin: 1rem 0;
     }
 
     .size-item {
-      background: black;
-      color: white;
+      background: white;
+      color: red;
       padding: 1rem 1rem;
       border-radius: 0.2rem;
-      font-weight: bold;
+      font-weight:;
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 1em;
+      font-size: 14px;
     }
 
     .size-item.selected {
@@ -435,7 +435,7 @@
     }
     
     .description-popup-content {
-      background: red;
+      background: ;
       padding: 1rem;
       border-radius: 0.5rem;
       max-width: 80%;
