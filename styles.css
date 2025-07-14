@@ -1,4 +1,4 @@
-a\
+
  /* Reset et styles de base */
     html, body {
       width: 100%;
@@ -373,7 +373,7 @@ a\
     .size-item {
       background: white;
       color: red;
-      padding: 1rem 1rem;
+      padding: 10px;
       border-radius: 0.2rem;
       font-weight: 1em;
       cursor: pointer;
