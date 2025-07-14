@@ -371,9 +371,9 @@
     .size-item {
       background: white;
       color: red;
-      padding: 10px;
+      padding: 1px;
       border-radius: 0.2rem;
-      font-weight: 1em;
+      font-weight: 11px;
       cursor: pointer;
       transition: all 0.2s;
       font-size: 16px;
