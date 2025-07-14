@@ -431,7 +431,7 @@
     
     .description-popup-content {
       background: ;
-      padding: 1rem;
+      padding: 9px;
       border-radius: 0.5rem;
       max-width: 80%;
       max-height: 80%;
@@ -610,7 +610,7 @@
       
       .description-popup-content {
         max-width: 90%;
-        padding: 1rem;
+        padding: 9px;
       }
     }
 
