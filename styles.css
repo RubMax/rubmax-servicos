@@ -586,8 +586,8 @@
     /* Responsive */
     @media (max-width: 768px) {
       .section-btn {
-        padding: 6px 12px;
-        font-size: 0.8em;
+        padding: 5px 5px;
+        font-size: 1em;
       }
 
       .logo-img {
@@ -622,7 +622,7 @@
       }
       
       .section-btn {
-        padding: 5px 10px;
+        padding: 5px 5px;
         font-size: 1em;
       }
       
