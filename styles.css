@@ -391,12 +391,12 @@
       display: inline-block;
       background-color: #25D366;
       color: white;
-      padding: 5px;
+      padding: 2px;
       border-radius: 0.5rem;
       text-decoration: none;
       font-weight: bold;
       margin-top: 1rem;
-      font-size: 3rem;
+      font-size: 1rem;
       transition: background-color 0.3s;
     }
 
