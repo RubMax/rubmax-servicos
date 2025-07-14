@@ -375,7 +375,7 @@
       color: red;
       padding: 1px;
       maging: 1px;
-      border-radius: 1rem;
+      border-radius: 25px;
       font-weight: 11px;
       cursor: pointer;
       transition: all 0.2s;
@@ -386,6 +386,7 @@
       background: #25D366;
       transform: scale(1.05);
       box-shadow: 0 0 5px rgba(0,0,0,0.2);
+     border-radius: 25px;
     }
 
     .whatsapp-btn {
