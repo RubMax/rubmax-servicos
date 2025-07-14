@@ -371,7 +371,8 @@
     .size-item {
       background: #d3d3d3;
       color: red;
-      padding: 10px;
+      padding: 5px;
+      maging: 10px;
       border-radius: 0.2rem;
       font-weight: 11px;
       cursor: pointer;
