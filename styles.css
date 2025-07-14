@@ -265,7 +265,6 @@
       align-items: center;
       flex-direction: column;
       z-index: 9999;
-      padding: ;
       overflow-y: auto;
     }
 
@@ -273,19 +272,18 @@
     .popup-content {
      max-width: 1000px;
       max-height: 50vh;
-      margin: auto;
-      padding: 3px;
+      margin: 1px;
       box-sizing: border-box;
       overflow-y: auto;
       background: white;
       color: #333;
-      padding: 1rem;
+      padding: 1px;
       border-radius: 1rem;
       width: 95vw;
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
      overflow-y: auto; /* Défilement pour le contenu */
       text-align: center;
-     font-size: 16px;
+     font-size: 14px;
     }
 
     .popup-close {
