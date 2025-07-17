@@ -874,101 +874,78 @@ document.getElementById('atalhoBtn').addEventListener('click', function() {
   }
 
   // Fonction pour afficher les instructions d'installation
-  function showInstallInstructions() {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isAndroid = /Android/.test(navigator.userAgent);
-    
-    let instructions = '';
-    
-    if (isIOS) {
-      instructions = `
-        <div style="text-align: center; padding: 20px;">
-          <h3>Pour ajouter à l'écran d'accueil :</h3>
-          <p>1. Appuyez sur le bouton "Partager"</p>
-          <p>2. Sélectionnez "Sur l'écran d'accueil"</p>
-          <p>3. Appuyez sur "Ajouter"</p>
-          <img src="https://i.imgur.com/9z2wDf1.png" style="max-width: 200px; margin-top: 10px;">
-        </div>
-      `;
-    } else if (isAndroid) {
-      instructions = `
-        <div style="text-align: center; padding: 20px;">
-          <h3>Pour ajouter à l'écran d'accueil :</h3>
-          <p>1. Appuyez sur les trois points en haut à droite</p>
-          <p>2. Sélectionnez "Ajouter à l'écran d'accueil"</p>
-          <p>3. Confirmez l'installation</p>
-          <img src="https://i.imgur.com/7XbJ2uQ.png" style="max-width: 200px; margin-top: 10px;">
-        </div>
-      `;
-    } else {
-      instructions = '<p>Cette fonctionnalité est disponible uniquement sur mobile.</p>';
-    }
-    
-    const popup = document.createElement('div');
-    popup.style.position = 'fixed';
-    popup.style.top = '0';
-    popup.style.left = '0';
-    popup.style.width = '100%';
-    popup.style.height = '100%';
-    popup.style.backgroundColor = 'rgba(0,0,0,0.9)';
-    popup.style.display = 'flex';
-    popup.style.justifyContent = 'center';
-    popup.style.alignItems = 'center';
-    popup.style.zIndex = '9999';
-    popup.style.color = 'white';
-    popup.style.fontSize = '1.2em';
-    
-    popup.innerHTML = `
-      <div style="background: #fff; color: #333; padding: 20px; border-radius: 10px; max-width: 90%;">
-        ${instructions}
-        <button style="margin-top: 20px; padding: 10px 20px; background: #83addc; color: white; border: none; border-radius: 5px; cursor: pointer;">
-          Fermer
-        </button>
-      </div>
-    `;
-    
-    popup.querySelector('button').addEventListener('click', () => {
-      document.body.removeChild(popup);
-    });
-    
-    document.body.appendChild(popup);
-  }
-
-  // Vérifier si l'API d'installation est disponible
-  if ('BeforeInstallPromptEvent' in window) {
-    let deferredPrompt;
-    
-    window.addEventListener('beforeinstallprompt', (e) => {
-      // Empêcher l'affichage automatique du prompt
-      e.preventDefault();
-      // Stocker l'événement pour l'utiliser plus tard
-      deferredPrompt = e;
-      
-      // Afficher le prompt d'installation
-      deferredPrompt.prompt();
-      
-      // Attendre la réponse de l'utilisateur
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('L\'utilisateur a accepté l\'installation');
-        } else {
-          console.log('L\'utilisateur a refusé l\'installation');
-        }
-        deferredPrompt = null;
-      });
-    });
-  } else {
-    // Si l'API n'est pas disponible, afficher les instructions manuelles
-    showInstallInstructions();
-  }
-});
-  </script>
-  <button id="installAppBtn" style="display:none;position:fixed;bottom:30px;right:30px;padding:15px 22px;background:#83addc;color:#fff;border:none;border-radius:8px;font-size:1.2em;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.15);cursor:pointer;">
+<button id="installAppBtn" style="display:none;position:fixed;bottom:30px;right:30px;padding:15px 22px;background:#83addc;color:#fff;border:none;border-radius:8px;font-size:1.2em;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.15);cursor:pointer;">
   Installer RubMax Servicos
 </button>
 
 <script>
 let deferredPrompt = null;
+
+// Détection plateforme
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+function isAndroid() {
+  return /Android/.test(navigator.userAgent);
+}
+
+// Affiche les instructions manuelles
+function showInstallInstructions() {
+  let instructions = '';
+
+  if (isIOS()) {
+    instructions = `
+      <div style="text-align: center; padding: 20px;">
+        <h3>Pour ajouter à l'écran d'accueil :</h3>
+        <p>1. Appuyez sur le bouton "Partager"</p>
+        <p>2. Sélectionnez "Sur l'écran d'accueil"</p>
+        <p>3. Appuyez sur "Ajouter"</p>
+        <img src="https://i.imgur.com/9z2wDf1.png" style="max-width: 200px; margin-top: 10px;">
+      </div>
+    `;
+  } else if (isAndroid()) {
+    instructions = `
+      <div style="text-align: center; padding: 20px;">
+        <h3>Pour ajouter à l'écran d'accueil :</h3>
+        <p>1. Appuyez sur les trois points en haut à droite</p>
+        <p>2. Sélectionnez "Ajouter à l'écran d'accueil"</p>
+        <p>3. Confirmez l'installation</p>
+        <img src="https://i.imgur.com/7XbJ2uQ.png" style="max-width: 200px; margin-top: 10px;">
+      </div>
+    `;
+  } else {
+    instructions = '<p>Cette fonctionnalité est disponible uniquement sur mobile.</p>';
+  }
+
+  const popup = document.createElement('div');
+  popup.style.position = 'fixed';
+  popup.style.top = '0';
+  popup.style.left = '0';
+  popup.style.width = '100%';
+  popup.style.height = '100%';
+  popup.style.backgroundColor = 'rgba(0,0,0,0.9)';
+  popup.style.display = 'flex';
+  popup.style.justifyContent = 'center';
+  popup.style.alignItems = 'center';
+  popup.style.zIndex = '9999';
+
+  popup.innerHTML = `
+    <div style="background: #fff; color: #333; padding: 20px; border-radius: 10px; max-width: 90%; text-align: center;">
+      ${instructions}
+      <button style="margin-top: 20px; padding: 10px 20px; background: #83addc; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Fermer
+      </button>
+    </div>
+  `;
+
+  popup.querySelector('button').addEventListener('click', () => {
+    document.body.removeChild(popup);
+  });
+
+  document.body.appendChild(popup);
+}
+
+// Gérer l’événement beforeinstallprompt (Android Chrome)
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
@@ -980,12 +957,28 @@ document.getElementById('installAppBtn').addEventListener('click', () => {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        document.getElementById('installAppBtn').style.display = 'none';
+        console.log("Installation acceptée");
+      } else {
+        console.log("Installation refusée");
       }
       deferredPrompt = null;
+      document.getElementById('installAppBtn').style.display = 'none';
     });
+  } else {
+    showInstallInstructions();
   }
 });
+
+// Si le bouton n’est jamais activé (pas Android/Chrome), afficher instructions
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (!deferredPrompt) {
+      showInstallInstructions();
+    }
+  }, 2000);
+});
+</script>
+
 </script>
 </body>
 </html>
