@@ -365,9 +365,12 @@ function displayProduits(data) {
     h2.id = sectionId;
     container.appendChild(h2);
 
+    
+
     const sectionContainer = document.createElement('div');
-    sectionContainer.className = "section-container";
-    container.appendChild(sectionContainer);
+sectionContainer.className = "section-container";
+sectionContainer.id = `${sectionId}-container`; // <<< très important
+
 
     data
       .filter(p => p.section === section)
