@@ -1,78 +1,66 @@
 const SHEET_NAME = "Produits";
 const ADMIN_EMAIL = "rubmaxben@gmail.com";
 
+// Appel des données via API Apps Script
 fetch('https://script.google.com/macros/s/AKfycbwoTyj8mpGYPfWCOxszGA-SPYTSBsJbJoHyFKgIr-b5xSAu-CO9pgE3bCebLGAWCVDnPg/exec?page=api')
   .then(res => res.json())
-  .then(displayProduits);
-  
-  
-  return HtmlService
-    .createHtmlOutputFromFile("index")
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-}
+  .then(data => {
+    if (typeof displayProduits === "function") {
+      displayProduits(data);
+    }
+  })
+  .catch(err => console.error("Erreur de chargement des données:", err));
 
-function include(filename) {
-  return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
+// GESTION DU SWIPE POUR LA GALLERY
+document.addEventListener("DOMContentLoaded", () => {
+  const gallery = document.getElementById('gallery-images');
+  if (gallery) {
+    let touchStartX = 0;
+    let touchEndX = 0;
 
-function getData() {
-  try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-    const rows = sheet.getDataRange().getValues();
-    rows.shift();
-    return rows.map(r => ({
-      section:     r[0],
-      nom:         r[1],
-      image:       r[2],
-      description: r[3],
-      prix:        (typeof r[4] === 'number') ? r[4].toString().replace('.', ',') : (r[4] || ""),
-      tailles:     r[5] || "",
-      code:        r[6] || "",
-      pub:         r[7] || "", // Colonne H - contenu de la pub
-      pubInterval: isNaN(r[8]) ? 25000 : r[8] * 1000 // Colonne I - intervalle en secondes
-    }));
-  } catch (err) {
-    throw new Error("Erreur getData: " + err.message);
+    gallery.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    gallery.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      if (touchEndX < touchStartX - 50) {
+        // Swipe gauche
+        gallery.scrollBy({ left: 200, behavior: 'smooth' });
+      }
+      if (touchEndX > touchStartX + 50) {
+        // Swipe droit
+        gallery.scrollBy({ left: -200, behavior: 'smooth' });
+      }
+    }
   }
-}
 
-function saveData(data) {
-  try {
-    if (!Array.isArray(data)) throw new Error("Données invalides");
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-    sheet.clearContents();
-    sheet.appendRow(["Section", "Nom", "Image", "Description", "Prix", "Tailles", "Code", "Pub", "Intervalle"]);
-    
-    data.forEach(item => {
-      if (
-        typeof item.section !== "string" ||
-        typeof item.nom !== "string" ||
-        typeof item.image !== "string" ||
-        typeof item.description !== "string" ||
-        (typeof item.prix !== "string" && typeof item.prix !== "number") ||
-        typeof item.tailles !== "string" ||
-        typeof item.code !== "string" ||
-        typeof item.pub !== "string"
-      ) throw new Error("Format d'article invalide");
-      
-      const prixValue = typeof item.prix === 'number' 
-        ? item.prix.toString().replace('.', ',') 
-        : item.prix;
-      
-      sheet.appendRow([
-        item.section,
-        item.nom,
-        item.image,
-        item.description,
-        prixValue,
-        item.tailles,
-        item.code,
-        item.pub,
-        item.pubInterval / 1000 // Convertir en secondes pour le sheet
-      ]);
+  // Bouton d'installation PWA
+  const installBtn = document.getElementById("atalhoBtn");
+  if (installBtn) {
+    let deferredPrompt;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = "block";
     });
-    return { success: true };
-  } catch (err) {
-    throw new Error("Erreur saveData: " + err.message);
+
+    installBtn.addEventListener("click", () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(choiceResult => {
+          if (choiceResult.outcome === "accepted") {
+            console.log("Installation acceptée");
+          } else {
+            console.log("Installation refusée");
+          }
+          deferredPrompt = null;
+        });
+      }
+    });
   }
-}
+});
