@@ -269,30 +269,40 @@ if ('serviceWorker' in navigator) {
     button.className = 'section-btn';
 
     button.addEventListener('click', function(e) {
-      e.preventDefault();
+  e.preventDefault();
 
-      // Masquer toutes les sections et titres
-      document.querySelectorAll('.section-container').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('#produits > h2').forEach(el => el.style.display = 'none');
-
-      // Afficher uniquement la section choisie
-      const targetSection = document.getElementById(sectionId);
-      if (targetSection) {
-        targetSection.style.display = 'block';
-        const container = targetSection.nextElementSibling;
-        if (container && container.classList.contains('section-container')) {
-          container.style.display = 'flex'; // ou 'block'
-        }
-      }
-
-      // Mettre à jour les boutons actifs
-      document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-    });
-
-    navContainer.appendChild(button);
+  // ✅ Masquer toutes les sections avec animation
+  document.querySelectorAll('.section-container').forEach(el => {
+    el.classList.remove('fade-in-down');
+    el.classList.add('fade-out-up');
+    setTimeout(() => {
+      el.style.display = 'none';
+      el.classList.remove('fade-out-up');
+    }, 400); // attendre fin de transition
   });
-}
+
+  document.querySelectorAll('#produits > h2').forEach(el => {
+    el.style.display = 'none';
+  });
+
+  // ✅ Afficher la section choisie avec animation
+  const targetSection = document.getElementById(sectionId);
+  if (targetSection) {
+    targetSection.style.display = 'block';
+
+    const container = targetSection.nextElementSibling;
+    if (container && container.classList.contains('section-container')) {
+      setTimeout(() => {
+        container.style.display = 'flex';
+        container.classList.add('fade-in-down');
+      }, 400); // afficher après que les autres soient masqués
+    }
+  }
+
+  // ✅ Mettre à jour les boutons actifs
+  document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
+  button.classList.add('active');
+});
 
 
     
