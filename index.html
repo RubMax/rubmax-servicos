@@ -241,22 +241,23 @@ if ('serviceWorker' in navigator) {
   allBtn.className = 'section-btn active'; // Par défaut actif
 
   allBtn.addEventListener('click', function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Afficher toutes les sections
-    document.querySelectorAll('.section-container').forEach(el => {
-      el.style.display = 'flex'; // ou 'block'
-    });
-
-    // Afficher tous les titres
-    document.querySelectorAll('#produits > h2').forEach(el => {
-      el.style.display = 'block';
-    });
-
-    // Mettre à jour les boutons actifs
-    document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
-    allBtn.classList.add('active');
+  // ✅ Afficher toutes les sections avec animation
+  document.querySelectorAll('.section-container').forEach(el => {
+    el.style.display = 'flex';
+    el.classList.add('fade-in-down');
   });
+
+  document.querySelectorAll('#produits > h2').forEach(el => {
+    el.style.display = 'block';
+  });
+
+  // ✅ Mettre à jour les boutons actifs
+  document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
+  allBtn.classList.add('active');
+});
+
 
   navContainer.appendChild(allBtn);
 
