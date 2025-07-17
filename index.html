@@ -233,19 +233,36 @@ if ('serviceWorker' in navigator) {
     function createSectionButtons(sections) {
   const navContainer = document.getElementById('section-nav');
   navContainer.innerHTML = '';
-  
+
   sections.forEach(section => {
     const sectionId = generateSectionId(section);
     const button = document.createElement('a');
     button.href = `#${sectionId}`;
     button.textContent = section.toUpperCase();
     button.className = 'section-btn';
-    
+
     button.addEventListener('click', function(e) {
       e.preventDefault();
-      scrollToSection(sectionId);
+
+      // Masquer tous les titres
+      document.querySelectorAll('#produits > h2').forEach(el => el.style.display = 'none');
+
+      // Masquer tous les containers
+      document.querySelectorAll('.section-container').forEach(el => el.style.display = 'none');
+
+      // Afficher le titre sélectionné
+      const targetTitle = document.getElementById(sectionId);
+      if (targetTitle) targetTitle.style.display = 'block';
+
+      // Afficher le bon container
+      const targetContainer = document.getElementById(`${sectionId}-container`);
+      if (targetContainer) targetContainer.style.display = 'flex';
+
+      // Bouton actif
+      document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
     });
-    
+
     navContainer.appendChild(button);
   });
 }
