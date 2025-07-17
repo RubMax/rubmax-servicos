@@ -230,81 +230,25 @@ if ('serviceWorker' in navigator) {
       });
     }
     
-  function createSectionButtons(sections) {
+    function createSectionButtons(sections) {
   const navContainer = document.getElementById('section-nav');
   navContainer.innerHTML = '';
-
-  // ✅ Ajouter le bouton "Tous"
-  const allBtn = document.createElement('a');
-  allBtn.href = "#";
-  allBtn.textContent = "TOUS";
-  allBtn.className = 'section-btn active'; // Par défaut actif
-
-  allBtn.addEventListener('click', function (e) {
-  e.preventDefault();
-
-  // ✅ Afficher toutes les sections avec animation
-  document.querySelectorAll('.section-container').forEach(el => {
-    el.style.display = 'flex';
-    el.classList.add('fade-in-down');
-  });
-
-  document.querySelectorAll('#produits > h2').forEach(el => {
-    el.style.display = 'block';
-  });
-
-  // ✅ Mettre à jour les boutons actifs
-  document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
-  allBtn.classList.add('active');
-});
-
-
-  navContainer.appendChild(allBtn);
-
-  // 🔁 Ajouter les autres boutons
+  
   sections.forEach(section => {
     const sectionId = generateSectionId(section);
     const button = document.createElement('a');
     button.href = `#${sectionId}`;
     button.textContent = section.toUpperCase();
     button.className = 'section-btn';
-
+    
     button.addEventListener('click', function(e) {
-  e.preventDefault();
-
-  // ✅ Masquer toutes les sections avec animation
-  document.querySelectorAll('.section-container').forEach(el => {
-    el.classList.remove('fade-in-down');
-    el.classList.add('fade-out-up');
-    setTimeout(() => {
-      el.style.display = 'none';
-      el.classList.remove('fade-out-up');
-    }, 400); // attendre fin de transition
+      e.preventDefault();
+      scrollToSection(sectionId);
+    });
+    
+    navContainer.appendChild(button);
   });
-
-  document.querySelectorAll('#produits > h2').forEach(el => {
-    el.style.display = 'none';
-  });
-
-  // ✅ Afficher la section choisie avec animation
-  const targetSection = document.getElementById(sectionId);
-  if (targetSection) {
-    targetSection.style.display = 'block';
-
-    const container = targetSection.nextElementSibling;
-    if (container && container.classList.contains('section-container')) {
-      setTimeout(() => {
-        container.style.display = 'flex';
-        container.classList.add('fade-in-down');
-      }, 400); // afficher après que les autres soient masqués
-    }
-  }
-
-  // ✅ Mettre à jour les boutons actifs
-  document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
-  button.classList.add('active');
-});
-
+}
 
     
     /**
