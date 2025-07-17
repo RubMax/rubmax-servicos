@@ -151,22 +151,17 @@ if ('serviceWorker' in navigator) {
     
     
       // Chargement des données
-     document.addEventListener
-    function triggerScrollPulse() {
-    const el = document.querySelector('.old-price');
-
-    // Stopper l’animation subtile
-    el.classList.add('pause-subtle');
-
-    // Déclencher scrollPulse
-    el.classList.add('animate-badge');
-
-    // Après 2s, retirer l’animation scrollPulse et relancer subtlePulse
-    setTimeout(() => {
-        el.classList.remove('animate-badge');
-        el.classList.remove('pause-subtle');
-    }, 2000);
-}
+    document.addEventListener("DOMContentLoaded", function () {
+    // Activer la première section au chargement
+    const firstSection = document.querySelector('h2');
+    if (firstSection) {
+      const firstSectionId = firstSection.id;
+      const btn = document.querySelector(`.section-btn[href="#${firstSectionId}"]`);
+      if (btn) {
+        btn.classList.add('active');
+      }
+    }
+  });
 
 
     function setupHorizontalDragScroll() {
