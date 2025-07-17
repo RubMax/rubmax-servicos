@@ -151,16 +151,20 @@ if ('serviceWorker' in navigator) {
     
     
       // Chargement des données
-      document.addEventListener('DOMContentLoaded', function() {
-  fetch('https://script.google.com/macros/s/AKfycbwoTyj8mpGYPfWCOxszGA-SPYTSBsJbJoHyFKgIr-b5xSAu-CO9pgE3bCebLGAWCVDnPg/exec?page=data')
-    .then(response => response.json())
-    .then(displayProduits)
-    .catch(err => {
-      document.getElementById("produits").innerHTML =
-        "<div class='alert alert-danger'>"+err.message+"</div>";
-    });
-  setupHorizontalDragScroll();
+     document.addEventListener('DOMContentLoaded', function () {
+  const galleryImages = document.getElementById('gallery-images');
+  if (galleryImages) {
+    galleryImages.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    galleryImages.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+  }
 });
+
     function triggerScrollPulse() {
     const el = document.querySelector('.old-price');
 
