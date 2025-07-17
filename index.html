@@ -230,10 +230,37 @@ if ('serviceWorker' in navigator) {
       });
     }
     
-   function createSectionButtons(sections) {
+  function createSectionButtons(sections) {
   const navContainer = document.getElementById('section-nav');
   navContainer.innerHTML = '';
 
+  // ✅ Ajouter le bouton "Tous"
+  const allBtn = document.createElement('a');
+  allBtn.href = "#";
+  allBtn.textContent = "TOUS";
+  allBtn.className = 'section-btn active'; // Par défaut actif
+
+  allBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // Afficher toutes les sections
+    document.querySelectorAll('.section-container').forEach(el => {
+      el.style.display = 'flex'; // ou 'block'
+    });
+
+    // Afficher tous les titres
+    document.querySelectorAll('#produits > h2').forEach(el => {
+      el.style.display = 'block';
+    });
+
+    // Mettre à jour les boutons actifs
+    document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
+    allBtn.classList.add('active');
+  });
+
+  navContainer.appendChild(allBtn);
+
+  // 🔁 Ajouter les autres boutons
   sections.forEach(section => {
     const sectionId = generateSectionId(section);
     const button = document.createElement('a');
@@ -244,27 +271,21 @@ if ('serviceWorker' in navigator) {
     button.addEventListener('click', function(e) {
       e.preventDefault();
 
-      // Masquer toutes les sections
-      document.querySelectorAll('.section-container').forEach(el => {
-        el.style.display = 'none';
-      });
+      // Masquer toutes les sections et titres
+      document.querySelectorAll('.section-container').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('#produits > h2').forEach(el => el.style.display = 'none');
 
-      // Masquer tous les titres
-      document.querySelectorAll('#produits > h2').forEach(el => {
-        el.style.display = 'none';
-      });
-
-      // Afficher la section correspondante
+      // Afficher uniquement la section choisie
       const targetSection = document.getElementById(sectionId);
       if (targetSection) {
         targetSection.style.display = 'block';
         const container = targetSection.nextElementSibling;
         if (container && container.classList.contains('section-container')) {
-          container.style.display = 'flex'; // ou 'block' selon le style voulu
+          container.style.display = 'flex'; // ou 'block'
         }
       }
 
-      // Marquer bouton actif
+      // Mettre à jour les boutons actifs
       document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
     });
