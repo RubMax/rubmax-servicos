@@ -230,23 +230,77 @@ if ('serviceWorker' in navigator) {
       });
     }
     
-    function createSectionButtons(sections) {
-  const navContainer = document.getElementById('section-nav');
-  navContainer.innerHTML = '';
-  
-  sections.forEach(section => {
-    const sectionId = generateSectionId(section);
-    const button = document.createElement('a');
-    button.href = `#${sectionId}`;
-    button.textContent = section.toUpperCase();
-    button.className = 'section-btn';
-    
+   function createSectionButtons(sections) {
+  const menu = document.getElementById('menu');
+  menu.innerHTML = "";
+
+  // Créer le bouton "Tous"
+  const allBtn = document.createElement('button');
+  allBtn.textContent = 'Tous';
+  allBtn.classList.add('section-btn', 'active');
+  allBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // ✅ Afficher toutes les sections avec animation
+    document.querySelectorAll('.section-container').forEach(el => {
+      el.style.display = 'flex';
+      el.classList.remove('fade-out-up');
+      el.classList.add('fade-in-down');
+    });
+
+    // ✅ Réafficher les titres
+    document.querySelectorAll('#produits > h2').forEach(el => {
+      el.style.display = 'block';
+    });
+
+    // ✅ Gérer les boutons actifs
+    document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
+    allBtn.classList.add('active');
+  });
+  menu.appendChild(allBtn);
+
+  // Créer les boutons de chaque section
+  sections.forEach(sectionId => {
+    const button = document.createElement('button');
+    button.textContent = sectionId;
+    button.classList.add('section-btn');
     button.addEventListener('click', function(e) {
       e.preventDefault();
-      scrollToSection(sectionId);
+
+      // ✅ Masquer toutes les sections avec animation fade-out
+      document.querySelectorAll('.section-container').forEach(el => {
+        el.classList.remove('fade-in-down');
+        el.classList.add('fade-out-up');
+        setTimeout(() => {
+          el.style.display = 'none';
+          el.classList.remove('fade-out-up');
+        }, 400); // attendre fin animation
+      });
+
+      // ✅ Masquer tous les titres
+      document.querySelectorAll('#produits > h2').forEach(el => {
+        el.style.display = 'none';
+      });
+
+      // ✅ Afficher la section sélectionnée avec animation
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.style.display = 'block';
+
+        const container = targetSection.nextElementSibling;
+        if (container && container.classList.contains('section-container')) {
+          setTimeout(() => {
+            container.style.display = 'flex';
+            container.classList.add('fade-in-down');
+          }, 400); // attendre la fin du fade-out
+        }
+      }
+
+      // ✅ Gérer les boutons actifs
+      document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
     });
-    
-    navContainer.appendChild(button);
+    menu.appendChild(button);
   });
 }
 
