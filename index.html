@@ -235,7 +235,7 @@ if ('serviceWorker' in navigator) {
   navContainer.innerHTML = '';
 
   sections.forEach(section => {
-    const sectionId = generateSectionId(section);
+    const sectionId = generateSectionId(section); // ex: nettoyage -> nettoyage, devient id
     const button = document.createElement('a');
     button.href = `#${sectionId}`;
     button.textContent = section.toUpperCase();
@@ -245,21 +245,30 @@ if ('serviceWorker' in navigator) {
       e.preventDefault();
 
       // Masquer tous les titres
-      document.querySelectorAll('#produits > h2').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('#produits > h2').forEach(el => {
+        el.style.display = 'none';
+      });
 
       // Masquer tous les containers
-      document.querySelectorAll('.section-container').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.section-container').forEach(el => {
+        el.style.display = 'none';
+      });
 
-      // Afficher le titre sélectionné
+      // Afficher uniquement la section sélectionnée
       const targetTitle = document.getElementById(sectionId);
-      if (targetTitle) targetTitle.style.display = 'block';
+      if (targetTitle) {
+        targetTitle.style.display = 'block';
+      }
 
-      // Afficher le bon container
       const targetContainer = document.getElementById(`${sectionId}-container`);
-      if (targetContainer) targetContainer.style.display = 'flex';
+      if (targetContainer) {
+        targetContainer.style.display = 'flex';
+      }
 
       // Bouton actif
-      document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.section-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
       button.classList.add('active');
     });
 
