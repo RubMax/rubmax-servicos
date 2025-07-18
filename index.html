@@ -813,67 +813,39 @@ ${(() => {
        document.getElementById("popup").style.display = "none";
     }
 
-function checkScreenSize()
-  // Fonction pour afficher les instructions d'installation
-  function showInstallInstructions() {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isAndroid = /Android/.test(navigator.userAgent);
-    
-    let instructions = '';
-    
-    if (isIOS) {
-      instructions = `
-        <div style="text-align: center; padding: 20px;">
-          <h3>Pour ajouter à l'écran d'accueil :</h3>
-          <p>1. Appuyez sur le bouton "Partager"</p>
-          <p>2. Sélectionnez "Sur l'écran d'accueil"</p>
-          <p>3. Appuyez sur "Ajouter"</p>
-          <img src="https://i.imgur.com/9z2wDf1.png" style="max-width: 200px; margin-top: 10px;">
-        </div>
-      `;
-    } else if (isAndroid) {
-      instructions = `
-        <div style="text-align: center; padding: 20px;">
-          <h3>Pour ajouter à l'écran d'accueil :</h3>
-          <p>1. Appuyez sur les trois points en haut à droite</p>
-          <p>2. Sélectionnez "Ajouter à l'écran d'accueil"</p>
-          <p>3. Confirmez l'installation</p>
-          <img src="https://i.imgur.com/7XbJ2uQ.png" style="max-width: 200px; margin-top: 10px;">
-        </div>
-      `;
-    } else {
-      instructions = '<p>Cette fonctionnalité est disponible uniquement sur mobile.</p>';
-    }
-    
-    const popup = document.createElement('div');
-    popup.style.position = 'fixed';
-    popup.style.top = '0';
-    popup.style.left = '0';
-    popup.style.width = '100%';
-    popup.style.height = '100%';
-    popup.style.backgroundColor = 'rgba(0,0,0,0.9)';
-    popup.style.display = 'flex';
-    popup.style.justifyContent = 'center';
-    popup.style.alignItems = 'center';
-    popup.style.zIndex = '9999';
-    popup.style.color = 'white';
-    popup.style.fontSize = '1.2em';
-    
-    popup.innerHTML = `
-      <div style="background: #fff; color: #333; padding: 20px; border-radius: 10px; max-width: 90%;">
-        ${instructions}
-        <button style="margin-top: 20px; padding: 10px 20px; background: #83addc; color: white; border: none; border-radius: 5px; cursor: pointer;">
-          Fermer
-        </button>
-      </div>
-    `;
-    
-    popup.querySelector('button').addEventListener('click', () => {
-      document.body.removeChild(popup);
-    });
-    
-    document.body.appendChild(popup);
+// Cette fonction ne bloque plus les grands écrans
+function checkScreenSize() {
+  // Tu peux conserver cette vérification si tu veux afficher un message, mais sans bloquer
+  // const isComputerScreen = window.innerWidth > 992;
+
+  // Ancien blocage supprimé : plus de popup ni restriction
+  // Tu peux éventuellement faire d’autres ajustements ici si besoin
+}
+
+// Appeler la fonction au chargement et redimensionnement
+window.addEventListener('load', checkScreenSize);
+window.addEventListener('resize', checkScreenSize);
+
+// Bouton d'installation
+document.getElementById('atalhoBtn').addEventListener('click', function () {
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    alert('L\'application est déjà installée sur votre écran d\'accueil!');
+    return;
   }
+
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choiceResult => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('Installation acceptée');
+      } else {
+        console.log('Installation refusée');
+      }
+    });
+  } else {
+    alert('L\'installation n\'est pas disponible pour le moment.');
+  }
+});
 
   // Vérifier si l'API d'installation est disponible
   if ('BeforeInstallPromptEvent' in window) {
