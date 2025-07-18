@@ -911,67 +911,41 @@ ${(() => {
   }
 });
 
+
+// Cette fonction ne bloque plus les grands écrans
 function checkScreenSize() {
-    // Définir la largeur minimale pour considérer comme un écran d'ordinateur
-    const isComputerScreen = window.innerWidth > 992; // 992px est une taille courante pour tablette/desktop
-    
-    if (isComputerScreen) {
-        // Créer le popup
-        const popup = document.createElement('div');
-        popup.style.position = 'fixed';
-        popup.style.top = '0';
-        popup.style.left = '0';
-        popup.style.width = '100%';
-        popup.style.height = '100%';
-        popup.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-        popup.style.color = 'white';
-        popup.style.display = 'flex';
-        popup.style.flexDirection = 'column';
-        popup.style.justifyContent = 'center';
-        popup.style.alignItems = 'center';
-        popup.style.zIndex = '9999';
-        popup.style.fontFamily = 'Arial, sans-serif';
-        popup.style.textAlign = 'center';
-        popup.style.padding = '20px';
-        
-        // Ajouter le message
-        const message = document.createElement('div');
-        message.innerHTML = '<h1>Cette application n\'est pas accessible sur grand écran</h1>' +
-                            '<p>Veuillez appuyer sur F12 </p>' +
-                            '<p>Ou utilisez un appareil mobile pour une meilleure expérience</p>';
-        message.style.fontSize = '1.5rem';
-        
-        popup.appendChild(message);
-        document.body.appendChild(popup);
-        
-        // Désactiver l'application (empêcher toute interaction)
-        document.body.style.overflow = 'hidden';
-        document.body.style.pointerEvents = 'none';
-        popup.style.pointerEvents = 'auto';
-        
-        // Empêcher le F12 d'ouvrir les outils de développement (optionnel)
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                e.preventDefault();
-                alert('Les outils de développement sont désactivés pour cette application.');
-            }
-        });
-    }
+  // Tu peux conserver cette vérification si tu veux afficher un message, mais sans bloquer
+  // const isComputerScreen = window.innerWidth > 992;
+
+  // Ancien blocage supprimé : plus de popup ni restriction
+  // Tu peux éventuellement faire d’autres ajustements ici si besoin
 }
 
-// Vérifier la taille de l'écran au chargement
+// Appeler la fonction au chargement et redimensionnement
 window.addEventListener('load', checkScreenSize);
-
-// Vérifier aussi lors du redimensionnement
 window.addEventListener('resize', checkScreenSize);
 
-
-document.getElementById('atalhoBtn').addEventListener('click', function() {
-  // Vérifier si le navigateur supporte l'API d'installation
+// Bouton d'installation
+document.getElementById('atalhoBtn').addEventListener('click', function () {
   if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
     alert('L\'application est déjà installée sur votre écran d\'accueil!');
     return;
   }
+
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choiceResult => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('Installation acceptée');
+      } else {
+        console.log('Installation refusée');
+      }
+    });
+  } else {
+    alert('L\'installation n\'est pas disponible pour le moment.');
+  }
+});
+
 
 function disableDevTools(e) {
   if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
