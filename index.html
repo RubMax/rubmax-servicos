@@ -151,16 +151,23 @@ if ('serviceWorker' in navigator) {
     
     
       // Chargement des données
-      document.addEventListener('DOMContentLoaded', function() {
-  fetch('https://script.google.com/macros/s/AKfycbwoTyj8mpGYPfWCOxszGA-SPYTSBsJbJoHyFKgIr-b5xSAu-CO9pgE3bCebLGAWCVDnPg/exec?page=data')
-    .then(response => response.json())
-    .then(displayProduits)
-    .catch(err => {
-      document.getElementById("produits").innerHTML =
-        "<div class='alert alert-danger'>"+err.message+"</div>";
+      document.addEventListener('DOMContentLoaded', () => {
+  const atalhoBtn = document.getElementById('atalhoBtn');
+  if (atalhoBtn) {
+    atalhoBtn.addEventListener('click', function () {
+      if (
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true
+      ) {
+        alert("L'application est déjà installée !");
+        return;
+      }
+
+      alert("Pour installer l'application, cliquez sur le bouton d'installation de votre navigateur.");
     });
-  setupHorizontalDragScroll();
+  }
 });
+
     function triggerScrollPulse() {
     const el = document.querySelector('.old-price');
 
