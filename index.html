@@ -911,41 +911,56 @@ ${(() => {
   }
 });
 
+  function checkScreenSize() {
+  const isComputerScreen = window.innerWidth > 992;
+  let popup = document.getElementById('screenSizePopup');
 
-// Cette fonction ne bloque plus les grands écrans
-function checkScreenSize() {
-  // Tu peux conserver cette vérification si tu veux afficher un message, mais sans bloquer
-  // const isComputerScreen = window.innerWidth > 992;
+  if (isComputerScreen) {
+    if (!popup) {
+      // Créer le popup s’il n’existe pas encore
+      popup = document.createElement('div');
+      popup.id = 'screenSizePopup';
+      popup.style.position = 'fixed';
+      popup.style.top = '0';
+      popup.style.left = '0';
+      popup.style.width = '100%';
+      popup.style.height = '100%';
+      popup.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
+      popup.style.color = 'white';
+      popup.style.display = 'flex';
+      popup.style.flexDirection = 'column';
+      popup.style.justifyContent = 'center';
+      popup.style.alignItems = 'center';
+      popup.style.zIndex = '9999';
+      popup.style.fontFamily = 'Arial, sans-serif';
+      popup.style.textAlign = 'center';
+      popup.style.padding = '20px';
 
-  // Ancien blocage supprimé : plus de popup ni restriction
-  // Tu peux éventuellement faire d’autres ajustements ici si besoin
-}
+      const message = document.createElement('div');
+      message.innerHTML = `
+        <h1>Cette application n'est pas accessible sur grand écran</h1>
+        <p>Appuyez sur F12 (mode mobile) ou utilisez un appareil mobile</p>
+      `;
+      message.style.fontSize = '1.5rem';
+      popup.appendChild(message);
+      document.body.appendChild(popup);
 
-// Appeler la fonction au chargement et redimensionnement
-window.addEventListener('load', checkScreenSize);
-window.addEventListener('resize', checkScreenSize);
+      // Bloquer les interactions
+      document.body.style.pointerEvents = 'none';
+      popup.style.pointerEvents = 'auto';
 
-// Bouton d'installation
-document.getElementById('atalhoBtn').addEventListener('click', function () {
-  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-    alert('L\'application est déjà installée sur votre écran d\'accueil!');
-    return;
-  }
-
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(choiceResult => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('Installation acceptée');
-      } else {
-        console.log('Installation refusée');
-      }
-    });
+      // Empêcher F12 / Ctrl+Shift+I
+      document.addEventListener('keydown', disableDevTools, true);
+    }
   } else {
-    alert('L\'installation n\'est pas disponible pour le moment.');
+    // Supprimer le popup si on revient en mobile
+    if (popup) {
+      popup.remove();
+      document.body.style.pointerEvents = 'auto';
+      document.removeEventListener('keydown', disableDevTools, true);
+    }
   }
-});
-
+}
 
 function disableDevTools(e) {
   if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
