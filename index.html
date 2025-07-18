@@ -947,12 +947,7 @@ document.getElementById('atalhoBtn').addEventListener('click', function () {
 });
 
 
-function disableDevTools(e) {
-  if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-    e.preventDefault();
-    alert("Les outils de développement sont désactivés.");
-  }
-}
+
 
 // Exécuter au chargement et redimensionnement
 window.addEventListener('load', checkScreenSize);
