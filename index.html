@@ -911,55 +911,34 @@ ${(() => {
   }
 });
 
-  function checkScreenSize() {
-  const isComputerScreen = window.innerWidth > 992;
-  let popup = document.getElementById('screenSizePopup');
+ function checkScreenSize() {
+    const isComputerScreen = window.innerWidth > 992;
 
-  if (isComputerScreen) {
-    if (!popup) {
-      // Créer le popup s’il n’existe pas encore
-      popup = document.createElement('div');
-      popup.id = 'screenSizePopup';
-      popup.style.position = 'fixed';
-      popup.style.top = '0';
-      popup.style.left = '0';
-      popup.style.width = '100%';
-      popup.style.height = '100%';
-      popup.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
-      popup.style.color = 'white';
-      popup.style.display = 'flex';
-      popup.style.flexDirection = 'column';
-      popup.style.justifyContent = 'center';
-      popup.style.alignItems = 'center';
-      popup.style.zIndex = '9999';
-      popup.style.fontFamily = 'Arial, sans-serif';
-      popup.style.textAlign = 'center';
-      popup.style.padding = '20px';
+    const existingPopup = document.getElementById('popupEcran');
+    if (existingPopup) existingPopup.remove(); // Retirer l'ancien popup s'il existe déjà
 
-      const message = document.createElement('div');
-      message.innerHTML = `
-        <h1>Cette application n'est pas accessible sur grand écran</h1>
-        <p>Appuyez sur F12 (mode mobile) ou utilisez un appareil mobile</p>
-      `;
-      message.style.fontSize = '1.5rem';
-      popup.appendChild(message);
-      document.body.appendChild(popup);
+    if (isComputerScreen) {
+        const popup = document.createElement('div');
+        popup.id = 'popupEcran';
+        popup.style.position = 'fixed';
+        popup.style.top = '0';
+        popup.style.left = '0';
+        popup.style.width = '100%';
+        popup.style.backgroundColor = '#111';
+        popup.style.color = '#fff';
+        popup.style.zIndex = '10000';
+        popup.style.padding = '15px';
+        popup.style.textAlign = 'center';
+        popup.style.fontSize = '1rem';
 
-      // Bloquer les interactions
-      document.body.style.pointerEvents = 'none';
-      popup.style.pointerEvents = 'auto';
+        popup.innerHTML = `
+            <strong>⚠️ Cette application est optimisée pour les appareils mobiles.</strong><br>
+            Pour une meilleure expérience, réduisez la taille de votre fenêtre ou utilisez un téléphone.
+            <span style="float:right; cursor:pointer;" onclick="this.parentNode.remove()">✖</span>
+        `;
 
-      // Empêcher F12 / Ctrl+Shift+I
-      document.addEventListener('keydown', disableDevTools, true);
+        document.body.appendChild(popup);
     }
-  } else {
-    // Supprimer le popup si on revient en mobile
-    if (popup) {
-      popup.remove();
-      document.body.style.pointerEvents = 'auto';
-      document.removeEventListener('keydown', disableDevTools, true);
-    }
-  }
 }
 
 function disableDevTools(e) {
