@@ -931,18 +931,15 @@ if ('serviceWorker' in navigator) {
       // Chargement des données
      fetch('https://script.google.com/macros/s/AKfycbwoTyj8mpGYPfWCOxszGA-SPYTSBsJbJoHyFKgIr-b5xSAu-CO9pgE3bCebLGAWCVDnPg/exec?page=data')
   .then(response => response.json())
-  .then(displayProduits)
+  .then(data => {
+    displayProduits(data); // ✅ Insère le HTML
+    setupHorizontalDragScroll(); // ✅ Appelé ensuite, une fois les éléments ajoutés
+  })
   .catch(err => {
     document.getElementById("produits").innerHTML =
       "<div class='alert alert-danger'>"+err.message+"</div>";
-    fetchData();
-  setupHorizontalDragScroll();
   });
-      
-      if (document.getElementById('pub-popup') && pubItems.length) {
-    startPubCarousel();
-  }
-});
+
 
     function triggerScrollPulse() {
     const el = document.querySelector('.old-price');
@@ -961,57 +958,60 @@ if ('serviceWorker' in navigator) {
 }
 
 
-    function setupHorizontalDragScroll() {
-      const container = document.getElementById('nav-container');
-      const content = document.getElementById('section-nav');
-      
-      let pos = { left: 0, x: 0 };
-      let isDragging = false;
-      
-      // Souris
-      content.addEventListener('mousedown', function(e) {
-        isDragging = true;
-        pos = {
-          left: container.scrollLeft,
-          x: e.clientX
-        };
-        content.classList.add('grabbing');
-        e.preventDefault();
-      });
-      
-      document.addEventListener('mousemove', function(e) {
-        if (!isDragging) return;
-        const dx = e.clientX - pos.x;
-        container.scrollLeft = pos.left - dx;
-      });
-      
-      document.addEventListener('mouseup', function() {
-        isDragging = false;
-        content.classList.remove('grabbing');
-      });
-      
-      // Tactile
-      content.addEventListener('touchstart', function(e) {
-        isDragging = true;
-        pos = {
-          left: container.scrollLeft,
-          x: e.touches[0].clientX
-        };
-        content.classList.add('grabbing');
-      }, { passive: false });
-      
-      document.addEventListener('touchmove', function(e) {
-        if (!isDragging) return;
-        const dx = e.touches[0].clientX - pos.x;
-        container.scrollLeft = pos.left - dx;
-        e.preventDefault();
-      }, { passive: false });
-      
-      document.addEventListener('touchend', function() {
-        isDragging = false;
-        content.classList.remove('grabbing');
-      });
-    }
+   function setupHorizontalDragScroll() {
+  const container = document.getElementById('nav-container');
+  const content = document.getElementById('section-nav');
+
+  if (!container || !content) return; // ✅ Évite l’erreur si les éléments n'existent pas
+
+  let pos = { left: 0, x: 0 };
+  let isDragging = false;
+
+  // Souris
+  content.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    pos = {
+      left: container.scrollLeft,
+      x: e.clientX
+    };
+    content.classList.add('grabbing');
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    const dx = e.clientX - pos.x;
+    container.scrollLeft = pos.left - dx;
+  });
+
+  document.addEventListener('mouseup', function() {
+    isDragging = false;
+    content.classList.remove('grabbing');
+  });
+
+  // Tactile
+  content.addEventListener('touchstart', function(e) {
+    isDragging = true;
+    pos = {
+      left: container.scrollLeft,
+      x: e.touches[0].clientX
+    };
+    content.classList.add('grabbing');
+  }, { passive: false });
+
+  document.addEventListener('touchmove', function(e) {
+    if (!isDragging) return;
+    const dx = e.touches[0].clientX - pos.x;
+    container.scrollLeft = pos.left - dx;
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchend', function() {
+    isDragging = false;
+    content.classList.remove('grabbing');
+  });
+}
+
     
     function createSectionButtons(sections) {
   const navContainer = document.getElementById('section-nav');
