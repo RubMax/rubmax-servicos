@@ -935,11 +935,14 @@ if ('serviceWorker' in navigator) {
   .catch(err => {
     document.getElementById("produits").innerHTML =
       "<div class='alert alert-danger'>"+err.message+"</div>";
+    fetchData();
+  setupHorizontalDragScroll();
   });
       
-      // Initialiser le défilement horizontal
-      setupHorizontalDragScroll();
-    });
+      if (document.getElementById('pub-popup') && pubItems.length) {
+    startPubCarousel();
+  }
+});
 
     function triggerScrollPulse() {
     const el = document.querySelector('.old-price');
@@ -1760,5 +1763,6 @@ document.getElementById('atalhoBtn').addEventListener('click', function() {
   }
 });
   </script>
+  <button id="atalhoBtn">Installer l'app</button>
 </body>
 </html>
