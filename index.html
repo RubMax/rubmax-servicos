@@ -1461,6 +1461,7 @@ ${(() => {
       
       // Positionner la galerie sur l'image actuelle
       galleryImages.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+          setupTouchEvents();
     }
     
     function prevImage() {
@@ -1499,14 +1500,26 @@ ${(() => {
       handleSwipe();
     }, {passive: true});
     
-    function handleSwipe() {
-      const threshold = 50;
-      if (touchStartX - touchEndX > threshold) {
-        nextImage(); // Glissement vers la gauche
-      } else if (touchEndX - touchStartX > threshold) {
-        prevImage(); // Glissement vers la droite
-      }
-    }
+    function setupTouchEvents() {
+  const galleryImages = document.getElementById('gallery-images');
+  if (!galleryImages) return; // Sécurité si élément absent
+  
+  let touchStartX = 0;
+  galleryImages.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, {passive: true});
+
+  galleryImages.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    handleSwipe(touchStartX, touchEndX); // Passer les valeurs
+  }, {passive: true});
+}
+
+function handleSwipe(startX, endX) {
+  const threshold = 50;
+  if (startX - endX > threshold) nextImage();
+  else if (endX - startX > threshold) prevImage();
+}
     
     function selectSize(element, size) {
   const sizeItems = document.querySelectorAll('.size-item');
