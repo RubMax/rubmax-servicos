@@ -543,7 +543,7 @@
 }
 
 .pub-image {
-  max-width: 100%;
+  max-width: 40%;
   max-height: 50vh;
   border-radius: 0.5rem;
   margin: 1rem auto;
