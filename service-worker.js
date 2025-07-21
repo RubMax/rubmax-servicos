@@ -1,3 +1,14 @@
+self.addEventListener('install', function(e) { 
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', function(e) {
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(fetch(event.request));
+});
+
 const CACHE_NAME = "rubmax-cache-v1";
 const urlsToCache = [
   "/",
