@@ -1,14 +1,38 @@
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register(URL.createObjectURL(new Blob([`
-      self.addEventListener('install', function(e) { self.skipWaiting(); });
-      self.addEventListener('activate', function(e) { });
-      self.addEventListener('fetch', function(event) {
-        event.respondWith(fetch(event.request));
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log("SW enregistré :", reg))
+      .catch(err => console.error("SW échec :", err));
+  }
+
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const installPopup = document.createElement('div');
+    installPopup.innerHTML = `
+      <div style="position:fixed;bottom:20px;left:20px;right:20px;background:white;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:9999;border-radius:10px;text-align:center;">
+        <p>Voulez-vous installer l'application RubMax ?</p>
+        <button id="installBtn" style="padding:10px 20px;background:#0084ff;color:white;border:none;border-radius:5px;">Installer</button>
+      </div>`;
+    document.body.appendChild(installPopup);
+
+    const installBtn = document.getElementById('installBtn');
+    if (installBtn) {
+      installBtn.addEventListener('click', () => {
+        installPopup.remove();
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(choiceResult => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('Installation acceptée');
+          } else {
+            console.log('Installation refusée');
+          }
+          deferredPrompt = null;
+        });
       });
-    `], {type: 'application/javascript'})));
+    }
   });
-}
 
     // Variable globale pour stocker les détails du produit actuel
     let currentProduct = {};
