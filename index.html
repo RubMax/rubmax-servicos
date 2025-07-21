@@ -1752,6 +1752,47 @@ document.getElementById('atalhoBtn').addEventListener('click', function() {
     showInstallInstructions();
   }
 });
+
+
+
+
+  let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Empêche Chrome de montrer la mini-bannière
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Affiche un popup personnalisé
+  showInstallPrompt();
+});
+
+function showInstallPrompt() {
+  const promptDiv = document.createElement('div');
+  promptDiv.innerHTML = `
+    <div style="position:fixed; bottom:20px; left:20px; right:20px; background:#83addc; color:white; padding:15px; border-radius:10px; text-align:center; z-index:10000;">
+      <p>Installez cette application sur votre appareil pour un accès rapide !</p>
+      <button id="installAppBtn" style="padding:10px 20px; border:none; background:white; color:#83addc; border-radius:5px; font-weight:bold; cursor:pointer;">Installer</button>
+    </div>
+  `;
+  document.body.appendChild(promptDiv);
+
+  document.getElementById('installAppBtn').addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('Utilisateur a accepté l’installation');
+        } else {
+          console.log('Utilisateur a refusé l’installation');
+        }
+        deferredPrompt = null;
+        promptDiv.remove();
+      });
+    }
+  });
+}
+
   </script>
 </body>
 </html>
