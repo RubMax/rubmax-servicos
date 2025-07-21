@@ -3,20 +3,24 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwoTyj8mpGYPfWCOxszGA-S
 fetch(API_URL)
   .then(res => res.json())
   .then(data => {
-    console.log("Données reçues :", data);
-    displayProduits(data); // remplace ceci par ta fonction d'affichage
+    console.log("✅ Données reçues :", data);
+    displayProduits(data);
   })
   .catch(error => {
-    console.error("Erreur fetch:", error);
+    console.error("❌ Erreur fetch:", error);
   });
 
 function displayProduits(data) {
   const container = document.getElementById("produits");
-  if (!container) return;
+  if (!container) {
+    console.error("❌ Conteneur #produits introuvable !");
+    return;
+  }
 
   container.innerHTML = "";
 
   data.forEach(item => {
+    console.log("📦 Produit :", item);
     const card = document.createElement("div");
     card.className = "produit-card";
     card.innerHTML = `
