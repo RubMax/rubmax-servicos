@@ -9,3 +9,22 @@ fetch(API_URL)
   .catch(error => {
     console.error("Erreur fetch:", error);
   });
+
+function displayProduits(data) {
+  const container = document.getElementById("produits");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  data.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "produit-card";
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.nom}">
+      <h3>${item.nom}</h3>
+      <p>${item.description}</p>
+      <p><strong>Prix:</strong> ${item.prix}</p>
+    `;
+    container.appendChild(card);
+  });
+}
