@@ -5,8 +5,8 @@ const urlsToCache = [
   "manifest.json",
   "styles.css",
   "script.js",
-  "icons/icon-192.png",
-  "icons/icon-512.png"
+  "https://rubmax.github.io/rubmax-servicos/icon-192.png",
+  "https://rubmax.github.io/rubmax-servicos/icon-512.png"
 ];
 
 self.addEventListener("install", event => {
