@@ -929,13 +929,17 @@ if ('serviceWorker' in navigator) {
     
     document.addEventListener('DOMContentLoaded', function() {
       // Chargement des données
-      google.script.run
-        .withFailureHandler(err => {
-          document.getElementById("produits").innerHTML =
-            "<div class='alert alert-danger'>"+err.message+"</div>";
-        })
-        .withSuccessHandler(displayProduits)
-        .getData();
+     fetch("https://script.google.com/macros/s/AKfycbwoTyj8mpGYPfWCOxszGA-SPYTSBsJbJoHyFKgIr-b5xSAu-CO9pgE3bCebLGAWCVDnPg/exec?page=api")
+  .then(response => response.json())
+  .then(data => {
+    displayProduits(data);
+  })
+  .catch(error => {
+    document.getElementById("produits").innerHTML =
+      "<div class='alert alert-danger'>Erreur de chargement des données</div>";
+    console.error(error);
+  });
+
       
       // Initialiser le défilement horizontal
       setupHorizontalDragScroll();
