@@ -154,13 +154,23 @@ if ('serviceWorker' in navigator) {
     
     document.addEventListener('DOMContentLoaded', function() {
       // Chargement des données
-      google.script.run
-        .withFailureHandler(err => {
-          document.getElementById("produits").innerHTML =
-            "<div class='alert alert-danger'>"+err.message+"</div>";
-        })
-        .withSuccessHandler(displayProduits)
-        .getData();
+     document.addEventListener('DOMContentLoaded', function() {
+  // Chargement des données via fetch (sur GitHub Pages)
+  fetch("https://script.google.com/macros/s/TON_ID_APPS_SCRIPT/exec?page=api")
+    .then(response => response.json())
+    .then(data => {
+      displayProduits(data);
+    })
+    .catch(error => {
+      document.getElementById("produits").innerHTML =
+        "<div class='alert alert-danger'>Erreur de chargement des données</div>";
+      console.error(error);
+    });
+
+  // Initialiser le défilement horizontal
+  setupHorizontalDragScroll();
+});
+
       
       // Initialiser le défilement horizontal
       setupHorizontalDragScroll();
