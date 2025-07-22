@@ -33,15 +33,19 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
-    .logo-container {
-      aligne-content: center;
-      padding: 0px 0;
-    }
-    
-    .logo-img {
-      max-width: 500px;
-      height: auto;
-    }
+   .logo-container {
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center;     /* Centre verticalement (optionnel) */
+  padding: 0;
+  width: 100%;            /* Assure que le conteneur prend toute la largeur */
+}
+
+.logo-img {
+  width: 100%;           /* Prend 100% de la largeur du parent (.logo-container) */
+  max-width: 500px;      /* Mais ne dépasse pas 500px */
+  height: auto;          /* Maintient le ratio d'aspect */
+}
     
     /* Barre de navigation défilante */
     .nav-scroll-container {
@@ -162,7 +166,7 @@
 
     .article-details {
       background: white;
-      padding: 1rem;
+      padding: 5px;
     }
 
     .article img {
@@ -175,35 +179,33 @@
     }
 
     /* Styles pour la galerie d'images */
-    .gallery-container {
+   .gallery-container {
   width: 100%;
-  max-width: 80%;
-  flex-shrink: 0; /* Empêche la réduction de hauteur */
+  max-width: 80%; /* Limite la largeur globale */
+  margin: 0 auto; /* Centre le conteneur */
 }
 
-     .image-gallery {
-    position: relative;
-    width: 100%;
-    height: 35vh; /* MODIFICATION ICI */
-    min-height: 4px;
-    overflow: hidden;
-  }
+.image-gallery {
+  position: relative;
+  width: 100%;
+  height: 35vh;
+  min-height: 4px;
+  overflow: hidden;
+}
 
-  .gallery-image {
-    width: 100%;
-    height: 100%; /* MODIFICATION ICI */
-    padding:;
-    object-fit: contain;
-  }
-    
-    .gallery-images {
+.gallery-images {
   display: flex;
   transition: transform 0.5s ease;
   width: 100%;
-  height: 90%; /* Prend toute la hauteur */
+  height: 100%; /* Utilise toute la hauteur */
 }
 
-
+.gallery-image {
+  width: 100%; /* Force 100% de la largeur disponible */
+  height: 100%;
+  object-fit: cover; /* Couvre tout l'espace (recadre si nécessaire) */
+  flex-shrink: 0; /* Empêche la réduction */
+}
 .popup-content {
   /* ... autres styles ... */
   overflow-y: auto; /* Défilement pour le contenu */
@@ -220,38 +222,159 @@
       z-index: 1;
     }
     
-    .gallery-btn {
-      background: rgba(255,255,255,0.7);
-      border: none;
-      border-radius: 50%;
-      width: 100px;
-      height: 100px;
-      font-size: 30px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 10px;
-    }
-    
-    .gallery-dots {
-      display: flex;
-      justify-content: center;
-      margin-top: 5px;
-    }
-    
-    .gallery-dot {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #ccc;
-      margin: 0 7px;
-      cursor: pointer;
-    }
-    
-    .gallery-dot.active {
-      background: #007bff;
-    }
+   /* Styles généraux du popup */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.popup-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* Conteneur galerie */
+.gallery-container {
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+}
+
+/* Galerie principale */
+.image-gallery {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* Conteneur des images */
+.gallery-images {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+/* Conteneur des boutons */
+.gallery-buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Styles des boutons */
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  z-index: 11;
+  transition: all 0.3s ease;
+}
+
+.gallery-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-btn.prev-btn {
+  left: 20px;
+}
+
+.gallery-btn.next-btn {
+  right: 20px;
+}
+
+/* Indicateurs de points */
+.gallery-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.gallery-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: red;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.gallery-dot.active {
+  background: white;
+}
+
+/* Contenu du popup */
+.popup-content {
+  width: 100%;
+  max-width: 800px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+/* Version responsive */
+@media (max-width: 768px) {
+  .image-gallery {
+    height: 40vh;
+  }
+  
+  .gallery-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  
+  .gallery-dot {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .popup-close {
+    font-size: 30px;
+    top: 10px;
+    right: 20px;
+  }
+}
 
     /* Popup */
     .popup {
@@ -348,12 +471,12 @@
     
 
     .currency-symbol {
-      font-size: 0.3em;
+      font-size: 1em;
       opacity: 0.8;
     }
 
     .price-amount {
-      font-size: 1.2em;
+      font-size: 1.3em;
       font-weight: bold;
       
     }
@@ -603,7 +726,7 @@
       }
       
       .popup h4 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
       }
       
       .description-popup-content {
@@ -619,7 +742,7 @@
       
       .section-btn {
         padding: 5px 10px;
-        font-size: 0.7em;
+        pub--size: 0.7em;
       }
       
       .logo-img {
@@ -665,8 +788,8 @@
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 140px;
-    height: 125px;
+    width: 80px;
+    height: 45px;
     background-image: url('https://iili.io/FCVmLe1.png');
     background-size: contain;
     background-repeat: no-repeat;
@@ -724,7 +847,7 @@
 .note-text {
   color: #007BFF;
   font-size: 1em;
-  margin-bottom: 8px;
+  margin-bottom: 3px;
 }
 
 /* Conteneur des tailles */
@@ -732,7 +855,7 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 5px;
+  margin-top: 1px;
 }
 
 /* Encadrement des tailles individuelles */

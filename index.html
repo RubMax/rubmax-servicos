@@ -33,20 +33,26 @@
   </div>
 
   <!-- Popup avec galerie d'images -->
-  <div id="popup" class="popup">
-    <span class="popup-close" onclick="closePopup()">&times;</span>
-    <div class="gallery-container">    
-      <div class="image-gallery">
-        <div class="gallery-images" id="gallery-images"></div>
-        <div class="gallery-nav">
-          <button class="gallery-btn" onclick="prevImage()">❮</button>
-          <button class="gallery-btn" onclick="nextImage()">❯</button>
-        </div>
+<div id="popup" class="popup">
+  <span class="popup-close" onclick="closePopup()">&times;</span>
+  
+  <div class="gallery-container">
+    <div class="image-gallery">
+      <div class="gallery-images" id="gallery-images"></div>
+      
+      <!-- Boutons de navigation -->
+      <div class="gallery-buttons">
+        <button class="gallery-btn prev-btn" onclick="prevImage()">❮</button>
+        <button class="gallery-btn next-btn" onclick="nextImage()">❯</button>
       </div>
+      
+      <!-- Indicateurs de points -->
       <div class="gallery-dots" id="gallery-dots"></div>
     </div>
-    <div id="popup-details" class="popup-content"></div>
   </div>
+  
+  <div id="popup-details" class="popup-content"></div>
+</div>
   
   <!-- Description Popup -->
   <div id="description-popup" class="description-popup">

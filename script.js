@@ -290,7 +290,7 @@ ${(() => {
 <br>
             <button class="open-button" onclick="showPopup('${escapeHtml(produit.image)}', '${escapeHtml(produit.nom)}', '${descriptionParam}', '${escapeHtml(produit.prix)}', '${escapeHtml(produit.tailles)}', '${escapeHtml(produit.code)}')">Solicite/Realise</button>
             
-            ${produit.description && produit.description.trim() !== '' ? `<h3><span class="description-link" onclick="event.stopPropagation(); showDescriptionPopup('${descriptionParam}')"><br>Saiba Mais</span></h3>` : ''}
+          
 
           </div>
         `;
@@ -507,7 +507,7 @@ ${(() => {
     </a>
 <br>
     <div">
-      <strong>Observe :</strong>
+      <strong>Descrição:</strong>
       <div class="description-text" color: #0081fe;">
         ${decodeURIComponent(description).replace(/\n/g, '<br>')}
       </div>
