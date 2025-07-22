@@ -152,11 +152,10 @@ if ('serviceWorker' in navigator) {
     let currentImageIndex = 0;
     let imageUrls = [];
     
-    document.addEventListener('DOMContentLoaded', function() {
       // Chargement des données
      document.addEventListener('DOMContentLoaded', function() {
   // Chargement des données via fetch (sur GitHub Pages)
-  fetch("https://script.google.com/macros/s/TON_ID_APPS_SCRIPT/exec?page=api")
+  fetch("https://script.google.com/macros/s/AKfycbwoTyj8mpGYPfWCOxszGA-SPYTSBsJbJoHyFKgIr-b5xSAu-CO9pgE3bCebLGAWCVDnPg/exec?page=api")
     .then(response => response.json())
     .then(data => {
       displayProduits(data);
