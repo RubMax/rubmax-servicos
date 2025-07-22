@@ -179,12 +179,7 @@ function handleScroll() {
 document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('scroll', handleScroll);
   
-  // Activer la première section au chargement
-  const firstSection = document.querySelector('h2');
-  if (firstSection) {
-    const firstSectionId = firstSection.id;
-    document.querySelector(`.section-btn[href="#${firstSectionId}"]`).classList.add('active');
-  }
+  
 });
     
     
