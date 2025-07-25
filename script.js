@@ -135,27 +135,71 @@ function generateSectionId(sectionName) {
     .replace(/(^-|-$)/g, ''); // Supprimer les tirets en début et fin
 } 
     
-    function scrollToSection(sectionId) {
-  const section = document.getElementById(sectionId);
-  if (section) {
-    const headerHeight = document.querySelector('.fixed-header').offsetHeight;
-    const sectionPosition = section.getBoundingClientRect().top + window.scrollY;
-    const offsetPosition = sectionPosition - headerHeight - 10; // 10px de marge
-    
+    document.addEventListener('DOMContentLoaded', () => {
+  // Afficher la première section au démarrage
+  const firstTitle = document.querySelector('h2');
+  const firstContainer = firstTitle?.nextElementSibling;
+
+  if (firstTitle && firstContainer) {
+    firstTitle.style.display = 'block';
+    firstContainer.style.display = 'block';
+  }
+});
+
+function scrollToSection(sectionId) {
+  const allSections = document.querySelectorAll('.section-container');
+  const allTitles = document.querySelectorAll('h2');
+
+  const firstTitle = allTitles[0];
+  const firstContainer = firstTitle?.nextElementSibling;
+  const firstSectionId = firstTitle?.id;
+
+  if (sectionId === firstSectionId) {
+    // Si on clique sur la première section, afficher tout
+    allTitles.forEach(title => title.style.display = 'block');
+    allSections.forEach(section => section.style.display = 'block');
+  } else {
+    allTitles.forEach((title, i) => {
+      if (i === 0) {
+        title.style.display = 'block'; // garder la première visible
+      } else {
+        title.style.display = (title.id === sectionId) ? 'block' : 'none';
+      }
+    });
+
+    allSections.forEach((section, i) => {
+      if (i === 0) {
+        section.style.display = 'block'; // garder le premier contenu visible
+      } else {
+        const sectionTitle = allTitles[i];
+        section.style.display = (sectionTitle?.id === sectionId) ? 'block' : 'none';
+      }
+    });
+  }
+
+  // Scroll vers la section cible
+  const targetSection = document.getElementById(sectionId);
+  if (targetSection) {
+    const headerHeight = document.querySelector('.fixed-header')?.offsetHeight || 0;
+    const sectionPosition = targetSection.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = sectionPosition - headerHeight - 10;
+
     window.scrollTo({
       top: offsetPosition,
       behavior: 'smooth'
     });
-    
-    // Mettre à jour le bouton actif
-    document.querySelectorAll('.section-btn').forEach(btn => {
-      btn.classList.remove('active');
-    });
-    document.querySelector(`.section-btn[href="#${sectionId}"]`).classList.add('active');
-    
-    history.pushState(null, null, `#${sectionId}`);
   }
+
+  // Mise à jour des boutons
+  document.querySelectorAll('.section-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelector(`.section-btn[href="#${sectionId}"]`)?.classList.add('active');
+
+  // Mise à jour de l’URL
+  history.pushState(null, null, `#${sectionId}`);
 }
+
 
 function handleScroll() {
   const sections = document.querySelectorAll('h2');
@@ -403,8 +447,9 @@ ${(() => {
     
     /* Fonctions pour la galerie d'images */
   function showPopup(imageUrl, nom, description, prix, tailles, code, hideWhatsappButton = false) {
-  // Stocker toutes les images
-  imageUrls = imageUrl.split(',').map(url => url.trim());
+  // Supprimer la première image de la galerie
+  imageUrls = imageUrl.split(',').map(url => url.trim()).slice(1); // 👈 ici
+  
   currentImageIndex = 0;
   document.getElementById("popup").style.display = "flex";
 
@@ -674,3 +719,75 @@ ${(() => {
        document.getElementById("popup").style.display = "none";
     }
 
+// Enregistrement du Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log("Service Worker enregistré", reg))
+      .catch(err => console.error("Erreur SW :", err));
+  });
+}
+
+let deferredPrompt;
+
+// Vérifie si l'app est déjà installée (mode standalone)
+const isAppInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+// Ne rien faire si l'app est déjà installée
+if (!isAppInstalled) {
+  // Événement déclenché uniquement si installation est possible
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();             // Bloque la bannière par défaut
+    deferredPrompt = e;             // Stocke l’événement
+    showInstallPopup();             // Affiche ton popup personnalisé
+  });
+} else {
+  console.log("✅ O aplicativo já está instalado, nenhum pop-up é exibido.");
+}
+
+// Affiche un popup personnalisé (modal, bannière, etc.)
+function showInstallPopup() {
+  const popup = document.createElement('div');
+  popup.style.position = 'fixed';
+  popup.style.bottom = '20px';
+  popup.style.left = '20px';
+  popup.style.right = '20px';
+  popup.style.padding = '20px';
+  popup.style.background = '#83addc';
+  popup.style.border = '1px solid #ccc';
+  popup.style.borderRadius = '10px';
+  popup.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+  popup.style.zIndex = '10000';
+  popup.style.fontFamily = 'sans-serif';
+  popup.innerHTML = `
+    <p>Gostaria de instalar este aplicativo no seu dispositivo?</p>
+    <button id="btn-install">📲 Sim, instale</button>
+    <button id="btn-fermer">❌ Não, obrigado</button>
+  `;
+  document.body.appendChild(popup);
+
+  document.getElementById('btn-install').addEventListener('click', () => {
+    popup.remove();
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log("✅ Instalação aceita");
+        } else {
+          console.log("❌ Instalação recusada");
+        }
+        deferredPrompt = null;
+      });
+    }
+  });
+
+  document.getElementById('btn-fermer').addEventListener('click', () => {
+    popup.remove();
+  });
+}
+
+// En option : log quand l'app est installée
+window.addEventListener('appinstalled', () => {
+  console.log("📱 O aplicativo foi instalado");
+  deferredPrompt = null;
+});

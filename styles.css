@@ -864,7 +864,7 @@
   padding: 2px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: #faf397;
+  background-color:;
   font-size: 1em;
 }
 
@@ -892,3 +892,4 @@
 #sizes-container.shake {
   box-shadow: 0 0 1px rgba(255, 0, 0, 0.5);
 }
+
